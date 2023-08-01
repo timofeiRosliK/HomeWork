@@ -7,6 +7,8 @@ import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.TemporalAmount;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Data {
     public static void main(String[] args) {
@@ -50,9 +52,15 @@ public class Data {
         //task26
         boolean isWeekDay = isWeekDay("09-03-2023 10:00:00");
         System.out.println("isWeekDay = " + isWeekDay);
-        //task17
-        boolean isPanGram = isPanGram("The quick brown fox jumps over the lazy dog" );
+        //task20
+        boolean isPanGram = isPanGram("The quick brown fox jumps over the lazy dog");
         System.out.println("isPanGram = " + isPanGram);
+        //task19
+        int quantity = calcEqualSymbolsInRow("aabbbcccdddd");
+        System.out.println("quantity = " + quantity);
+        //task18
+        int sum = calcSum("abc123def456");
+        System.out.println("sum = " + sum);
 
 
     }
@@ -116,7 +124,7 @@ public class Data {
 
     public static int calcMaxVowels(String str) {
         char[] chars = str.toCharArray();
-        char[] vowels = {'a', 'e', 'o', 'u', 'i' };
+        char[] vowels = {'a', 'e', 'o', 'u', 'i'};
         int max = 0;
         for (int i = 0; i < chars.length - 1; i++) {
             for (int j = 0; j < vowels.length; j++) {
@@ -184,12 +192,37 @@ public class Data {
         }
         return false;
     }
-    public static boolean isPanGram(String str){
-        if (str.matches("[a-zA-z]") && str.matches(" ") ){
-            return true;
-        }
-        return false;
+
+    //task20
+    public static boolean isPanGram(String str) {
+        Pattern pattern = Pattern.compile("^[a-zA-Z]*$");
+        Matcher matcher = pattern.matcher(str);
+        return matcher.matches();
+
     }
 
+    //task19
+    public static int calcEqualSymbolsInRow(String str) {
+        int count = 1;
+        for (int i = 0; i < str.length() - 1; i++) {
+            char symbol = str.charAt(i);
+            if (symbol == str.charAt(i + 1)) {
+                count++;
+            } else if (symbol != str.charAt(i + 1)) {
+                count = 1;
+            }
+        }
+        return count;
+    }
 
+    //task18
+    public static int calcSum(String str) {
+        Pattern pattern = Pattern.compile("\\d+");
+        Matcher matcher = pattern.matcher(str);
+        int sum = 0;
+        while (matcher.find()) {
+            sum += Integer.parseInt(matcher.group());
+        }
+        return sum;
+    }
 }
